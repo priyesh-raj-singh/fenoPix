@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Canvas Example</title>
+    <h1>Bubbles app</h1>
+    <style>
+      canvas {
+        border: 3px solid black;
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="myCanvas" width="400" height="350"></canvas>
+    <button id="resetButton">Reset</button>
+    <script>
+      const canvas = document.getElementById('myCanvas');
+      const ctx = canvas.getContext('2d');
+
+      const circles = [
+        { x: 80, y: 80, color: 'red', hit: false, originalColor: 'red' },
+        { x: 80, y: 150, color: 'blue', hit: false, originalColor: 'blue' },
+        { x: 80, y: 220, color: 'green', hit: false, originalColor: 'green' },
+        { x: 80, y: 290, color: 'orange', hit: false, originalColor: 'orange' }
+      ];
+
+      const arrows = circles.map(() => ({
+        x: 150,
+        y: 80,
+        targetX: 230,
+        targetY: 80,
+        speed: 2,
+        hitCircleIndex: -1
+      }));
+
+      function drawCircle(x, y, color) {
+        ctx.fillStyle = color;
+        ctx.beginPath();
+        ctx.arc(x, y, 20, 0, 2 * Math.PI);
+        ctx.fill();
+      }
+
+      function drawArrows() {
+        arrows.forEach(arrow => {
+          ctx.strokeStyle = 'black';
+          ctx.lineWidth = 2;
+          ctx.beginPath();
+          ctx.moveTo(arrow.x, arrow.y);
+          ctx.lineTo(arrow.targetX, arrow.targetY);
+          ctx.stroke();
+          ctx.beginPath();
+          ctx.moveTo(arrow.x, arrow.y);
+          ctx.lineTo(arrow.x + 10, arrow.y - 5);
+          ctx.stroke();
+          ctx.beginPath();
+          ctx.moveTo(arrow.x, arrow.y);
+          ctx.lineTo(arrow.x + 10, arrow.y + 5);
+          ctx.stroke();
+        });
+      }
+
+      function drawCircles() {
+        circles.forEach((circle, index) => {
+          drawCircle(circle.x, circle.y, circle.color);
+          if (circle.hit) {
+            drawCircle(circle.x, circle.y, 'gray');
+          }
+        });
+      }
+
+      function animateArrows() {
+        arrows.forEach((arrow, index) => {
+          if (arrow.hitCircleIndex !== -1) {
+            const hitCircle = circles[arrow.hitCircleIndex];
+            const dx = hitCircle.x - arrow.x;
+            const dy = hitCircle.y - arrow.y;
+            const distance = Math.sqrt(dx * dx + dy * dy);
+            const velocityX = (dx / distance) * arrow.speed;
+            const velocityY = (dy / distance) * arrow.speed;
+
+            if (distance > arrow.speed) {
+              arrow.x += velocityX;
+              arrow.y += velocityY;
+            } else {
+              hitCircle.hit = true;
+              hitCircle.color = 'gray';
+              arrow.hitCircleIndex = -1;
+            }
+          }
+        });
+      }
+
+      function resetApp() {
+        circles.forEach(circle => {
+          circle.hit = false;
+          circle.color = circle.original
+          .color;
+        });
+
+        arrows.forEach(arrow => {
+          arrow.x = 150;
+          arrow.y = 80;
+          arrow.hitCircleIndex = -1;
+        });
+      }
+
+      function checkCollision(x, y) {
+        for (let i = 0; i < circles.length; i++) {
+          const circle = circles[i];
+          const dx = x - circle.x;
+          const dy = y - circle.y;
+          const distance = Math.sqrt(dx * dx + dy * dy);
+          if (distance <= 20) {
+            arrows[i].targetX = circle.x;
+            arrows[i].targetY = circle.y;
+            arrows[i].hitCircleIndex = i;
+            break;
+          }
+        }
+      }
+
+      function handleClick(event) {
+        const rect = canvas.getBoundingClientRect();
+        const x = event.clientX - rect.left;
+        const y = event.clientY - rect.top;
+        checkCollision(x, y);
+      }
+
+      function handleReset() {
+        resetApp();
+      }
+
+      canvas.addEventListener('click', handleClick);
+      document.getElementById('resetButton').addEventListener('click', handleReset);
+
+      function draw() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        drawCircles();
+        drawArrows();
+        animateArrows();
+        requestAnimationFrame(draw);
+      }
+
+      draw();
+    </script>
+  </body>
+</html>

@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Canvas Example</title>
+    <h1>Bubbles app</h1>
+    <style>
+      canvas {
+        border: 3px solid black;
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="myCanvas" width="400" height="500"></canvas>
+    <script>
+      const canvas = document.getElementById('myCanvas');
+      const ctx = canvas.getContext('2d');
+      
+      ctx.fillStyle = 'red';
+      ctx.beginPath();
+      ctx.arc(80, 80, 20, 0, 2 * Math.PI);
+      ctx.fill();
+      
+      ctx.fillStyle = 'blue';
+      ctx.beginPath();
+      ctx.arc(80, 150, 20, 0, 2 * Math.PI);
+      ctx.fill();
+      
+      ctx.fillStyle = 'green';
+      ctx.beginPath();
+      ctx.arc(80, 220, 20, 0, 2 * Math.PI);
+      ctx.fill();
+      
+      ctx.fillStyle = 'orange';
+      ctx.beginPath();
+      ctx.arc(80, 290, 20, 0, 2 * Math.PI);
+      ctx.fill();
+      
+      ctx.strokeStyle = 'black';
+      ctx.lineWidth = 2;
+      
+      // draw arrow from (250,50) to (350,50)
+      ctx.beginPath();
+      ctx.moveTo(150, 80);
+      ctx.lineTo(230, 80);
+      ctx.stroke();
+      
+      ctx.beginPath();
+      ctx.moveTo(150, 80);
+      ctx.lineTo(160, 75);
+      ctx.stroke();
+      
+      ctx.beginPath();
+      ctx.moveTo(150, 80);
+      ctx.lineTo(160, 85);
+      ctx.stroke();
+      
+      // draw arrow from (250,100) to (350,100)
+      ctx.beginPath();
+      ctx.moveTo(150, 150);
+      ctx.lineTo(230, 150);
+      ctx.stroke();
+      
+      ctx.beginPath();
+      ctx.moveTo(150, 150);
+      ctx.lineTo(160, 145);
+      ctx.stroke();
+      
+      ctx.beginPath();
+      ctx.moveTo(150, 150);
+      ctx.lineTo(160, 155);
+      ctx.stroke();
+      
+      // draw arrow from (250,150) to (350,150)
+      ctx.beginPath();
+      ctx.moveTo(150, 220);
+      ctx.lineTo(230, 220);
+      ctx.stroke();
+      
+      ctx.beginPath();
+      ctx.moveTo(150, 220);
+      ctx.lineTo(160, 215);
+      ctx.stroke();
+      
+      ctx.beginPath();
+      ctx.moveTo(150, 220);
+      ctx.lineTo(160, 225);
+      ctx.stroke();
+      
+      // draw arrow from (250,200) to (350,200)
+      ctx.beginPath();
+      ctx.moveTo(150, 290);
+      ctx.lineTo(230, 290);
+      ctx.stroke();
+      
+      ctx.beginPath();
+      ctx.moveTo(150, 290);
+      ctx.lineTo(160, 285);
+      ctx.stroke();
+      
+      ctx.beginPath();
+      ctx.moveTo(150, 290);
+      ctx.lineTo(160, 295);
+      ctx.stroke();
+    </script>
+  </body>
+</html>
